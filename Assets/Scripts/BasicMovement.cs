@@ -6,7 +6,8 @@ public class BasicMovement : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] float jumpSpeed;
-
+    private Vector3 respawnPoint;
+    public GameObject fallDetector;
     Rigidbody2D rb;
 
     bool facingRight = true;
@@ -14,6 +15,7 @@ public class BasicMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        respawnPoint = transform.position;
     }
 
     void Update()
@@ -36,6 +38,14 @@ public class BasicMovement : MonoBehaviour
         {
             transform.eulerAngles += new Vector3(0, 180, 0);
             facingRight = true;
+        }
+        fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "FallDetector")
+        {
+            transform.position = respawnPoint;
         }
     }
 }
