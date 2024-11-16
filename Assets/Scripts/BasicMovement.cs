@@ -9,6 +9,7 @@ public class BasicMovement : MonoBehaviour
     private Vector3 respawnPoint;
     public GameObject fallDetector;
     Rigidbody2D rb;
+    public Animator anim;
 
     bool facingRight = true;
 
@@ -24,9 +25,19 @@ public class BasicMovement : MonoBehaviour
 
         rb.velocity = new Vector2(xMov, rb.velocity.y);
 
+        if(Mathf.Abs(rb.velocity.x)>0.01f)
+        {
+            anim.SetBool("isWalking", true);
+        }
+        else
+        {
+            anim.SetBool("isWalking", false);
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity += Vector2.up * jumpSpeed;
+            anim.SetTrigger("isJumping");
         }
 
         if (facingRight && xMov < 0)
